@@ -1,31 +1,18 @@
-# Beijing Air Quality — Data Analysis
+# 🌫️ Beijing Air Quality Analysis & Dashboard
 
 ## 📌 Project Overview
 
-This project analyzes the **Beijing Multi-Site Air Quality Dataset** to understand air pollution patterns across multiple monitoring stations in Beijing.
+This project analyzes the **Beijing Multi-Site Air Quality Dataset** to understand air pollution patterns across Beijing.
 
-The analysis was performed using **Python, Pandas, NumPy, Matplotlib, Seaborn, and Plotly**.
+The project uses **Python for data analysis and cleaning**, followed by an interactive **Streamlit dashboard** and **MySQL database setup** for structured data analysis.
 
-The dataset contains hourly air-quality and weather measurements collected from **12 monitoring stations**.
-
----
-
-## 🎯 Objectives
-
-* Explore the structure and quality of the dataset
-* Analyze major air pollutants
-* Identify pollution trends over time
-* Compare pollution levels across monitoring stations
-* Study the relationship between weather conditions and pollution
-* Detect missing and invalid values
-* Identify potential outliers
-* Prepare a clean dataset for further SQL, Machine Learning, and Deep Learning analysis
+The same cleaned dataset is being used throughout the project to maintain a consistent end-to-end workflow.
 
 ---
 
 ## 📊 Dataset
 
-The dataset contains approximately **420,000 hourly observations** from 12 monitoring stations.
+The dataset contains approximately **420,000 hourly observations** collected from **12 monitoring stations** in Beijing between **2013 and 2017**.
 
 ### Air Pollutants
 
@@ -38,23 +25,14 @@ The dataset contains approximately **420,000 hourly observations** from 12 monit
 
 ### Weather Variables
 
-* TEMP — Temperature
-* PRES — Atmospheric Pressure
-* DEWP — Dew Point
-* RAIN — Rainfall
-* wd — Wind Direction
-* WSPM — Wind Speed
+* Temperature
+* Atmospheric Pressure
+* Dew Point
+* Rainfall
+* Wind Direction
+* Wind Speed
 
-### Time Variables
-
-* Year
-* Month
-* Day
-* Hour
-
-### Station
-
-The dataset contains measurements from 12 monitoring stations:
+### Monitoring Stations
 
 * Aotizhongxin
 * Changping
@@ -71,92 +49,152 @@ The dataset contains measurements from 12 monitoring stations:
 
 ---
 
-## 🔍 Analysis Performed
+# 🔍 1. Python Data Analysis
 
-### 1. Data Understanding
+The dataset was explored and prepared using Python.
 
-* Dataset shape
-* Column information
+### Data Analysis
+
+* Dataset shape and structure
 * Data types
-* Statistical summary
-* Unique stations
-* Time-period analysis
+* Statistical summaries
+* Missing-value analysis
+* Duplicate checking
+* Station-wise analysis
+* Pollutant analysis
+* Weather analysis
+* Time-based analysis
 
-### 2. Data Quality Analysis
+### Data Cleaning
 
-Checked for:
+The following preprocessing was performed:
 
-* Missing values
-* Duplicate records
-* Invalid numerical values
-* Data-type inconsistencies
-* Negative pollutant readings
-* Potential outliers
-
-### 3. Data Cleaning
-
-The following preprocessing steps were performed:
-
-* Converted numerical columns to appropriate numeric types
-* Converted invalid negative pollutant/weather readings to missing values where appropriate
-* Filled missing numerical values using station-wise median values
-* Filled remaining missing values using overall medians
-* Filled missing wind-direction values using the mode
+* Converted numerical columns to appropriate data types
+* Checked pollutant values for invalid negative readings
+* Preserved valid negative temperature and dew-point values
+* Handled missing numerical values using median imputation
+* Used station-wise medians where appropriate
+* Handled missing wind-direction values using the mode
 * Created useful time-based features
-* Sorted observations by station and time
+* Sorted records by station and time
 
-> Temperature and dew-point values were not treated as invalid merely because they were negative, since negative values are physically possible for these variables.
+### Exploratory Data Analysis
 
----
-
-## 📈 Exploratory Data Analysis
-
-The analysis includes visualizations for:
+Visualizations were created to analyze:
 
 * Pollutant distributions
-* Pollution trends over time
+* Pollution trends
 * Monthly pollution patterns
 * Hourly pollution patterns
-* Day-of-week pollution patterns
-* Station-wise pollution comparison
-* Pollutant comparison
-* Pollutant correlation
+* Day-of-week patterns
+* Station-wise pollution levels
+* Pollutant comparisons
+* Pollutant correlations
 * Weather vs pollution relationships
 
-Interactive visualizations were also created using **Plotly**.
+An **AQI-style trend** was also created to visualize overall air-quality patterns across different time periods.
+
+> The AQI-style calculation is intended for analytical comparison and visualization and is not presented as an official CPCB AQI calculation.
+
+### Technologies
+
+`Python` · `Pandas` · `NumPy` · `Matplotlib` · `Seaborn` · `Plotly`
 
 ---
 
-## 🌫️ Overall Air Quality Analysis
+# 📊 2. Streamlit Dashboard
 
-An AQI-style analysis was created to understand overall air-quality trends across different time periods.
+The cleaned dataset was used to build an interactive Streamlit dashboard.
 
-The analysis considers:
+### Dashboard Features
 
+* Station selection
+* Pollutant selection
+* Year filtering
+* Average, minimum and maximum pollutant values
+* Record count
+* Pollution trends
+* Hourly pollution patterns
+* Monthly trends
+* Day-of-week analysis
+* Station comparison
+* Pollutant comparison
+* Weather vs pollution analysis
+* Pollutant correlation
+* Overall air-quality trend
+* Interactive Plotly charts
+
+The dashboard allows users to explore pollution patterns interactively without directly modifying the analysis code.
+
+### Technologies
+
+`Python` · `Streamlit` · `Pandas` · `NumPy` · `Plotly`
+
+---
+
+# 🗄️ 3. MySQL Database Setup
+
+The cleaned dataset is currently being prepared for SQL-based analysis using MySQL.
+
+A relational database structure has been created with:
+
+### `stations`
+
+Stores the 12 monitoring stations.
+
+### `air_quality`
+
+Stores:
+
+* Date/time components
 * PM2.5
 * PM10
-* NO2
 * SO2
+* NO2
 * CO
 * O3
 
-The AQI-style value is used for **analytical visualization and comparison**, rather than being presented as an official CPCB AQI calculation, because the dataset contains hourly observations and official AQI calculations depend on specified averaging periods.
+### `weather`
+
+Stores:
+
+* Temperature
+* Pressure
+* Dew Point
+* Rainfall
+* Wind Direction
+* Wind Speed
+
+### `air_quality_raw`
+
+A staging table matching the cleaned CSV structure is being used to load the data before inserting it into the normalized tables.
+
+The database uses **Primary Keys and Foreign Keys** to establish relationships between the tables.
 
 ---
 
-## 🧹 Output
-
-After cleaning and preprocessing, the final dataset was saved as:
+# 📁 Repository Structure
 
 ```text
-beijing_air_quality_cleaned.csv
+Beijing_Air_Quality/
+│
+├── 01_Analysis/
+│   ├── Beijing_Air_Quality_Analysis.ipynb
+│   └── README.md
+│
+├── 02_Dashboard/
+│   ├── Beijing_Air_Quality_Dashboard.py
+│   └── README.md
+│
+├──  beijing_air_quality_cleaned.csv
+│ 
+│
+└── README.md
 ```
-
-This cleaned dataset is used as the input for the next stages of the project.
 
 ---
 
-## 🛠️ Technologies Used
+# 🛠️ Technologies Used
 
 * Python
 * Pandas
@@ -164,41 +202,11 @@ This cleaned dataset is used as the input for the next stages of the project.
 * Matplotlib
 * Seaborn
 * Plotly
+* Streamlit
+* MySQL
+* SQL
 * Google Colab
 * GitHub
-
----
-
-## 📁 Files
-
-```text
-01_Analysis/
-│
-├── Beijing_Air_Quality_Analysis.ipynb
-└── README.md
-```
-
----
-
-## 🚀 Project Roadmap
-
-This analysis is the first stage of a larger end-to-end data project.
-
-```text
-Python Data Analysis
-        ↓
-Streamlit Dashboard
-        ↓
-SQL Analysis
-        ↓
-Machine Learning
-        ↓
-Deep Learning
-        ↓
-Agentic AI
-```
-
-The cleaned dataset produced during this stage will be reused throughout the later stages of the project.
 
 ---
 
